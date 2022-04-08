@@ -35,7 +35,7 @@ func init() {
 			{
 				Timestamp:         genesisTime,
 				PreviousBlockHash: hash[:],
-				MyBlockHash:       newHash(genesisString),
+				Hash:              newHash(genesisString),
 				AllData:           dataHashed,
 				Validator:         "GB547",
 			},
@@ -51,14 +51,14 @@ func (block *Block) SetHash() {
 	timestamp := []byte(strconv.FormatInt(block.Timestamp, 10))                                  // get the time and convert it into a unique series of digits
 	headers := bytes.Join([][]byte{timestamp, block.PreviousBlockHash, block.AllData}, []byte{}) // concatenate all the block data
 	hash := sha512.Sum512(headers)                                                               // hash the whole thing
-	block.MyBlockHash = hash[:]                                                                  // now set the hash of the block
+	block.Hash = hash[:]                                                                         // now set the hash of the block
 }
 
 func NewBlockHash(block *Block) []byte {
 	timestamp := []byte(strconv.FormatInt(block.Timestamp, 10))                                  // get the time and convert it into a unique series of digits
 	headers := bytes.Join([][]byte{timestamp, block.PreviousBlockHash, block.AllData}, []byte{}) // concatenate all the block data
 	hash := sha512.Sum512(headers)                                                               // hash the whole thing
-	block.MyBlockHash = hash[:]
+	block.Hash = hash[:]
 	return hash[:]
 }
 

@@ -5,9 +5,10 @@ package blockchain
 type Block struct {
 	Timestamp         int64  // the time when the block was created
 	PreviousBlockHash []byte // the hash of the previous block
-	MyBlockHash       []byte // the hash of the current block
+	Hash              []byte // the hash of the current block
 	AllData           []byte // the data or transactions (body info)
 	Validator         string // validator Address
+	Sign              []byte // signing the data
 }
 
 // Prepare the Blockchain data structure :

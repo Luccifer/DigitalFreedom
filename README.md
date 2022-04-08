@@ -3,8 +3,10 @@
 ## TODO - ShortRun
 
 ### Architecture
-- [ ] Multi-Thread
-
+- [ ] Multi-Thread \ Concurrency
+- [ ] Refactoring
+- [ ] P2P
+- 
 ### Validators
 - [ ] Unique Validators Check
 - [ ] Authentication
@@ -12,9 +14,15 @@
 - [ ] More info About Validators
 
 ### PoS
-- [ ] Decentralise
+- [ ] Decentralization
+- [ ] Weighting
 
 ### Data 
 - [ ] Transpparent Transfer
 - [ ] Signing Data
 - [ ] Adresses Allocation
+- [ ] Tokenization 
+- [ ] PBFT
+
+### ID
+- [x] Overall fields
