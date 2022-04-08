@@ -2,6 +2,13 @@ package id
 
 type Education int
 
+type Edu struct {
+	level  Education
+	issuer string
+	year   string
+	study  string
+}
+
 const (
 
 	// Early childhood education 0

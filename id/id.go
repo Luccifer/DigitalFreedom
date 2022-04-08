@@ -1,21 +1,25 @@
 package id
 
 type ID struct {
-	Name       string
-	Surname    string
-	Patronomic string
+	Name       Name
+	Surname    Surname
+	Patron     Patron
 	Sex        Sex
 	Birth      Birth
+	Language   Language
+	Education  []Edu
+	Work       []Work
 	Religion   Religion
+	Duty       Duty
 	DrivingLic []Driving
-	Wallet     string
-	Issuer     string
+	Wallet     Wallet
+	Issuer     Issuer
 	Relatives  []ID
 	Blood      ABO
-}
-
-type Birth struct {
-	Date    int64
-	Country string
-	City    string
+	Residence  []Residence
+	Passports  []Passport
+	Signature  []byte
+	Criminal   CriminalRecord
+	Refugee    Refugee
+	Photo      []byte //base64
 }
