@@ -6,7 +6,7 @@
 - [ ] Multi-Thread \ Concurrency
 - [ ] Refactoring
 - [ ] P2P
-- 
+
 ### Validators
 - [ ] Unique Validators Check
 - [ ] Authentication
