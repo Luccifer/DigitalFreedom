@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func addNewNode(w http.ResponseWriter, r *http.Request) {
+func nodeHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path == "/" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
