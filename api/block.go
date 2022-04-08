@@ -3,7 +3,9 @@ package api
 import (
 	"DigitalFreedom/blockchain"
 	"fmt"
+	math "math/rand"
 	"net/http"
+	"time"
 )
 
 func addNew(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +17,7 @@ func addNew(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
-		for i, block := range blockchain.Chain.Blocks { // iterate on each block
+		for i, block := range blockchain.Pos.Blockchain { // iterate on each block
 			fmt.Fprintf(w, "\n------------------------------------------------\n")
 			fmt.Fprintf(w, "Block ID : %d \n", i)
 			fmt.Fprintf(w, "Timestamp : %d \n", block.Timestamp+int64(i))
@@ -32,10 +34,12 @@ func addNew(w http.ResponseWriter, r *http.Request) {
 		}
 
 		mu.Lock()
-		blockchain.Chain.AddBlock(r.FormValue("data"))
+		math.Seed(time.Now().UnixNano())
+
+		//blockchain.Chain.AddBlock(r.FormValue("data"))
 		mu.Unlock()
 
-		for i, block := range blockchain.Chain.Blocks { // iterate on each block
+		for i, block := range blockchain.Pos.Blockchain { // iterate on each block
 			fmt.Fprintf(w, "\n------------------------------------------------\n")
 			fmt.Fprintf(w, "Block ID : %d \n", i)
 			fmt.Fprintf(w, "Timestamp : %d \n", block.Timestamp+int64(i))

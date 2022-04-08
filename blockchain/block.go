@@ -1,30 +1,16 @@
 package blockchain
 
-import (
-	"bytes"
-	"crypto/sha512"
-	"strconv"
-	"time"
-)
-
-//method for generating a hash of the block
-//concatenate all the data and hash it to obtain the block hash
-func (block *Block) SetHash() {
-	timestamp := []byte(strconv.FormatInt(block.Timestamp, 10))                                  // get the time and convert it into a unique series of digits
-	headers := bytes.Join([][]byte{timestamp, block.PreviousBlockHash, block.AllData}, []byte{}) // concatenate all the block data
-	hash := sha512.Sum512(headers)                                                               // hash the whole thing
-	block.MyBlockHash = hash[:]                                                                  // now set the hash of the block
+// Create the Block data structure
+// A block contains this info:
+type Block struct {
+	Timestamp         int64  // the time when the block was created
+	PreviousBlockHash []byte // the hash of the previous block
+	MyBlockHash       []byte // the hash of the current block
+	AllData           []byte // the data or transactions (body info)
+	Validator         string // validator Address
 }
 
-//function for new block generation and return that block
-func NewBlock(data string, prevBlockHash []byte) *Block {
-	block := &Block{time.Now().Unix(), prevBlockHash, []byte{}, []byte(data)} // the block is received
-	block.SetHash()                                                           // the block is hashed
-	return block                                                              // the block is returned with all the information in it
-}
-
-//create the genesis block function that will return the first block.
-//The genesis block is the first block on the chain
-func NewGenesisBlock() *Block {
-	return NewBlock("Genesis Block", []byte{}) // the genesis block is made with some data in it
+// Prepare the Blockchain data structure :
+type Blockchain struct {
+	Blocks []*Block // remember a blockchain is a series of blocks
 }

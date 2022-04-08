@@ -1,27 +1,71 @@
 package blockchain
 
 import (
-	"DigitalFreedom/logger"
+	"bytes"
+	"crypto/sha512"
+	math "math/rand"
+	"strconv"
+	"time"
 )
 
-var Chain = DigitalBlockchain()
+var Pos = PoSNetwork{}
 
-// create the method that adds a new block to a blockchain
-func (blockchain *Blockchain) AddBlock(data string) {
-	PreviousBlock := blockchain.Blocks[len(blockchain.Blocks)-1] // the previous block is needed, so let's get it
-	newBlock := NewBlock(data, PreviousBlock.MyBlockHash)        // create a new block containing the data and the hash of the previous block
-	blockchain.Blocks = append(blockchain.Blocks, newBlock)      // add that block to the chain to create a chain of blocks
+func init() {
 
-	logger.Log.Printf("\nNEW BLOCK--------------------------------------------------------------------------------------------------------------- \n")
-	logger.Log.Printf("Block ID : %d \n", newBlock.MyBlockHash)
-	logger.Log.Printf("Timestamp : %d \n", newBlock.Timestamp)
-	logger.Log.Printf("Hash of the block : %x\n", newBlock.MyBlockHash)
-	logger.Log.Printf("Hash of the previous Block : %x\n", newBlock.PreviousBlockHash)
-	logger.Log.Printf("Data : %s\n", newBlock.AllData)
+	math.Seed(time.Now().Unix())
+
+	// generate an initial PoS network including a blockchain with a genesis block.
+	genesisTime := time.Now().Unix()
+	genesisString := string(genesisTime)
+
+	h := sha512.New()
+	h.Write([]byte("GB547"))
+	hashed := h.Sum(nil)
+
+	dataH := sha512.New()
+	dataH.Write([]byte("Genesis Block"))
+	dataHashed := dataH.Sum(nil)
+
+	timestamp := []byte(strconv.FormatInt(genesisTime, 10)) // get the time and convert it into a unique series of digits
+	headers := bytes.Join([][]byte{timestamp}, hashed)      // concatenate all the block data
+	hash := sha512.Sum512(headers)                          // hash the whole thing
+
+	Pos = PoSNetwork{
+		Blockchain: []*Block{
+			{
+				Timestamp:         genesisTime,
+				PreviousBlockHash: hash[:],
+				MyBlockHash:       newHash(genesisString),
+				AllData:           dataHashed,
+				Validator:         "GB547",
+			},
+		},
+	}
+	Pos.BlockchainHead = Pos.Blockchain[0]
 
 }
 
-/* Create the function that returns the whole blockchain and add the genesis to it first. the genesis block is the first ever mined block, so let's create a function that will return it since it does not exist yet */
-func DigitalBlockchain() *Blockchain { // the function is created
-	return &Blockchain{[]*Block{NewGenesisBlock()}} // the genesis block is added first to the chain
+//method for generating a hash of the block
+//concatenate all the data and hash it to obtain the block hash
+func (block *Block) SetHash() {
+	timestamp := []byte(strconv.FormatInt(block.Timestamp, 10))                                  // get the time and convert it into a unique series of digits
+	headers := bytes.Join([][]byte{timestamp, block.PreviousBlockHash, block.AllData}, []byte{}) // concatenate all the block data
+	hash := sha512.Sum512(headers)                                                               // hash the whole thing
+	block.MyBlockHash = hash[:]                                                                  // now set the hash of the block
+}
+
+func NewBlockHash(block *Block) []byte {
+	timestamp := []byte(strconv.FormatInt(block.Timestamp, 10))                                  // get the time and convert it into a unique series of digits
+	headers := bytes.Join([][]byte{timestamp, block.PreviousBlockHash, block.AllData}, []byte{}) // concatenate all the block data
+	hash := sha512.Sum512(headers)                                                               // hash the whole thing
+	block.MyBlockHash = hash[:]
+	return hash[:]
+}
+
+func newHash(s string) []byte {
+	h := sha512.New()
+	h.Write([]byte(s))
+	hashed := h.Sum(nil)
+	return hashed
+	//return hex.EncodeToString(hashed)
 }
