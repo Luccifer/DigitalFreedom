@@ -14,5 +14,6 @@ func HandleWebServer() {
 
 	http.HandleFunc("/block", addNew)
 	http.HandleFunc("/node", addNewNode)
+	http.HandleFunc("/id", addNewPerson)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }

@@ -29,7 +29,7 @@ func GenerateNewBlock(Validator *Node) ([]*Block, *Block, error) {
 	newBlock := &Block{
 		Timestamp:         currentTime,
 		PreviousBlockHash: Pos.BlockchainHead.Hash,
-		Hash:              NewBlockHash(Pos.BlockchainHead),
+		Hash:              hashFor(Pos.BlockchainHead),
 		Validator:         Validator.Address,
 	}
 
@@ -63,7 +63,7 @@ func ValidateBlockchain() error {
 			return errors.New("blockchain has inconsistent timestamps")
 		}
 
-		hashCheck2 := bytes.Compare(NewBlockHash(prevBlock), currBlock.Hash)
+		hashCheck2 := bytes.Compare(hashFor(prevBlock), currBlock.Hash)
 		if hashCheck2 != 0 {
 			return errors.New("blockchain has inconsistent hash generation")
 		}
@@ -84,7 +84,7 @@ func ValidateBlockCandidate(newBlock *Block) error {
 		return errors.New("blockchain HEAD timestamp is greater than or equal to new block timestamp")
 	}
 
-	hashCheck2 := bytes.Compare(NewBlockHash(Pos.BlockchainHead), newBlock.Hash)
+	hashCheck2 := bytes.Compare(hashFor(Pos.BlockchainHead), newBlock.Hash)
 	if hashCheck2 != 0 {
 		return errors.New("new block hash of blockchain HEAD does not equal new block hash")
 	}

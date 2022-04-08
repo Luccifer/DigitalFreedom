@@ -1,6 +1,7 @@
 package id
 
 type ID struct {
+	guid       string
 	Name       Name
 	Surname    Surname
 	Patron     Patron
